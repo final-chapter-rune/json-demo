@@ -1,0 +1,225 @@
+:root {
+  --purple-600: hsl(246, 80%, 60%);
+
+  --orange-300: hsl(15, 100%, 70%); 
+  --blue-300: hsl(195, 74%, 62%);    
+  --pink-400: hsl(348, 100%, 68%);
+  --green-400: hsl(145, 58%, 55%);    
+  --purple-700: hsl(264, 64%, 52%);  
+  --yellow-300: hsl(43, 84%, 65%);   
+
+  --navy-950: hsl(226, 43%, 10%);     
+  --navy-900: hsl(235, 46%, 20%);  
+  --purple-500: hsl(235, 45%, 61%); 
+  --navy-200: hsl(236, 100%, 87%);   
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;           
+  flex-direction: column;     
+  background-color: var(--navy-950);  
+  font-family: 'Rubik', sans-serif;   
+
+  min-height: 100vh;
+}
+
+.Main {
+  display: grid;
+  gap: 1rem;
+  width: 100%;        /* 配合 max-width:屏幕小时占满,屏幕大时封顶 */
+  max-width: 1100px;
+
+  .card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 1rem;
+    row-gap: 1.5rem;
+    align-items: center;
+    border-radius: 15px;
+    padding: 4.5rem 1.5rem 1.5rem;  /* 顶部留出 72px:色条 60px + 12px 空隙 */
+    background-color: var(--navy-900);
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.2s, color 0.2s;
+
+    h2 {
+      margin: 0;      /* 清除浏览器默认的标题上下外边距 */
+      color: white;
+      font-size: 1.125rem;   /* style-guide:卡片标题 18px */
+    }
+
+    .card-head {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        > img {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+        }
+    }
+
+    .card-hours {
+        margin: 0;
+        font-size: 2rem;
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 300;
+    }
+
+    .card-previous {
+      margin: 0;
+      color: var(--navy-200);
+      font-size: 0.9375rem;
+    }
+
+    button {
+      background: none;   /* 去掉浏览器默认按钮样式 */
+      border: none;
+      cursor: pointer;    /* 悬停变小手,暗示可点击 */
+    }
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--accent);
+  }
+}
+
+/* 每张卡片声明自己的强调色,::before 通过 var(--accent) 自动取用 */
+.card-work      { --accent: var(--orange-300); }
+.card-play      { --accent: var(--blue-300); }
+.card-study     { --accent: var(--pink-400); }
+.card-exercise  { --accent: var(--green-400); }
+.card-social    { --accent: var(--purple-700); }
+.card-self-care { --accent: var(--yellow-300); }
+
+.switcher button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.attribution {
+  font-size: 0.6875rem;
+  text-align: center;
+}
+
+.profile {
+  background-color: var(--purple-600);
+  border-radius: 15px;
+  padding: 2rem 2rem 0;
+  .id {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-areas: 
+            "avatar report"
+            "avatar name";
+        column-gap: 1rem;
+        align-items: center;
+        img { grid-area: avatar; margin-bottom: 0;}
+        p { grid-area: report; }
+        h1 { grid-area: name; }
+    }
+}
+
+.profile img {
+  display: block;           /* 消除行内基线下的小空隙 */
+  width: 64px;
+  border: 3px solid white;  /* 设计稿的白圈描边 */
+  border-radius: 50%;       /* 圆形头像 */
+  margin-bottom: 1.5rem;
+}
+
+.profile p {
+  margin: 0;
+  color: var(--navy-200);   /* 浅色小字 */
+  font-size: 0.875rem;
+}
+.profile h1 {
+  margin: 0.25rem 0 0;
+  color: white;
+  font-weight: 300;         /* 设计稿名字是细字重 */
+  font-size: 1.5rem;
+}
+
+.switcher {
+  list-style: none;             /* 去掉 li 的小圆点 */
+  padding: 1.5rem 2rem;
+  margin: 2rem -2rem 0;         /* ← 负外边距技巧 */
+  background-color: var(--navy-900);
+  border-radius: 0 0 15px 15px; /* 下角圆角与面板一致 */
+  display: flex;
+  justify-content:space-between;
+}
+.switcher button {
+    transition: color 0.2s;
+    color: var(--purple-500);     /* 未选中态的颜色 */
+    font-size: 1rem;
+    &.active {
+        color: white;
+    }
+
+}
+
+.switcher button:hover {
+  color: white;
+}
+
+.card-head button:hover img {
+  filter: brightness(0) invert(1);
+}
+
+.card:hover {
+  background-color: hsl(235, 46%, 30%);  /* 亮度 20% → 30%,同色系浅一号 */
+}
+
+@media (min-width: 900px) {
+  .Main {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+    .Main .card {
+        display: block;             /* 写全层级;block 比 flex 更简单,不用管方向 */
+    }
+    .Main .card .card-hours {
+        margin: 1.5rem 0 0;         
+        font-size: 2.5rem;          
+    }
+    .Main .card .card-previous {
+        margin: 0.5rem 0 0;
+    } 
+  .profile {
+    grid-row: span 2;
+    display: flex;            /* 桌面:面板改为 flex 列(顺便解决下面的问题) */
+    flex-direction: column;
+  }
+  .profile .id {              /* ← 写全,和基础规则同等优先级,靠"写在后面"取胜 */
+    display: block;
+    padding: 2.5rem 1rem;
+  }
+
+  .profile .id img {          /* ← 同理写全 */
+    margin-bottom: 2rem;
+  }
+  .profile img {
+    width: 78px;
+  }
+  .profile h1 {
+    font-size: 2.5rem;
+  }
+  .switcher {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-top: auto;         /* ← 新技巧,见下面 */
+  }
+}
+
